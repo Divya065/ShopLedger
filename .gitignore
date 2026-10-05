@@ -55,8 +55,9 @@ appsettings.*.json
 Project 1/appsettings.Production.json
 Project 1/.vscode/sftp.json
 
-# Publish output folder (only zip needed)
+# Publish output (secrets + binaries)
 Project 1/publish-somee/
+Project 1/publish-somee.zip
 
 # Frontend env files with secrets
 Project 1/frontend/.env.production

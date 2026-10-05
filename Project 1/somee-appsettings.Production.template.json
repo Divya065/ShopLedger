@@ -1,17 +1,25 @@
 {
   "ConnectionStrings": {
-    "DefaultConnection": "Server=YOUR-SOMEE-SQL-SERVER;Database=YOUR-DB-NAME;User Id=YOUR-SQL-USER;Password=YOUR-SQL-PASSWORD;TrustServerCertificate=True;"
+    "DefaultConnection": "Server=YOUR-SOMEE-SQL-SERVER;Database=YOUR-DB-NAME;User Id=YOUR-SQL-USER;Password=YOUR-SQL-PASSWORD;TrustServerCertificate=True;Encrypt=True;"
   },
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "AllowedHosts": "*",
   "Cors": {
     "AllowedOrigins": [
       "http://localhost:3000",
+      "http://127.0.0.1:3000",
       "https://YOUR-APP.vercel.app"
     ]
   },
   "Jwt": {
     "Issuer": "https://YOUR-USERNAME.somee.com",
     "Audience": "https://YOUR-USERNAME.somee.com",
-    "SigningKey": "CHANGE-THIS-TO-A-LONG-RANDOM-SECRET-KEY"
+    "SigningKey": "CHANGE-THIS-TO-A-LONG-RANDOM-SECRET-AT-LEAST-64-CHARACTERS-LONG"
   },
   "Razorpay": {
     "KeyId": "rzp_test_xxx",
@@ -21,5 +29,14 @@
   "Upi": {
     "MerchantVpa": "your@upi",
     "MerchantName": "My Store"
+  },
+  "Subscription": {
+    "MonthlyPriceInr": 499,
+    "YearlyPriceInr": 4999
+  },
+  "SuperAdmin": {
+    "UserName": "superadmin",
+    "Email": "superadmin@localhost",
+    "Password": "SuperAdmin#123"
   }
 }
