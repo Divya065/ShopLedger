@@ -145,6 +145,18 @@ using (var scope = app.Services.CreateScope())
     var db = scope.ServiceProvider.GetRequiredService<ApplicationDBContext>();
     try
     {
+        // New Somee SQL databases are empty — create Identity + app tables before column patches.
+        await db.Database.EnsureCreatedAsync();
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"EnsureCreated failed (check SQL connection string): {ex.Message}");
+        if (ex.InnerException != null)
+            Console.WriteLine($"Inner: {ex.InnerException.Message}");
+    }
+
+    try
+    {
         await db.Database.ExecuteSqlRawAsync(@"
             IF EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'Comments')
             AND NOT EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'Offers')
@@ -430,6 +442,8 @@ using (var scope = app.Services.CreateScope())
     catch { /* ignore */ }
 
     // SaaS columns must exist before UserManager queries AppUser (FindByNameAsync).
+    try
+    {
     await EnsureColumnAsync(db, "AspNetUsers", "ShopName",
         "ALTER TABLE [dbo].[AspNetUsers] ADD [ShopName] nvarchar(120) NULL");
     await EnsureColumnAsync(db, "AspNetUsers", "IsActive",
@@ -545,6 +559,13 @@ using (var scope = app.Services.CreateScope())
     catch (Exception ex)
     {
         Console.WriteLine($"SuperAdmin seed failed: {ex.Message}");
+        if (ex.InnerException != null)
+            Console.WriteLine($"Inner: {ex.InnerException.Message}");
+    }
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Database bootstrap failed: {ex.Message}");
         if (ex.InnerException != null)
             Console.WriteLine($"Inner: {ex.InnerException.Message}");
     }
